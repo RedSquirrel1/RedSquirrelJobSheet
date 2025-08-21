@@ -1,0 +1,65 @@
+{
+  "name": "red-squirrel-job-sheet",
+  "version": "1.0.0",
+  "private": true,
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "concurrently -k \"npm:react\" \"npm:electron-dev\"",
+    "react": "cross-env BROWSER=none react-scripts start",
+    "electron-dev": "wait-on http://localhost:3000 && electron .",
+    "build:web": "set GENERATE_SOURCEMAP=false&& react-scripts build",
+    "dist": "npm run build:web && electron-builder -w"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3",
+    "react-scripts": "5.0.1",
+    "wait-on": "^7.2.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "build": {
+    "appId": "au.redsquirrel.jobsheet",
+    "productName": "Red Squirrel Job Sheet",
+    "directories": {
+      "buildResources": "assets"
+    },
+    "files": [
+      "build/**/*",
+      "electron/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "assets/icon.ico",
+      "publisherName": "Red Squirrel"
+    },
+    "nsis": {
+      "oneClick": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Red Squirrel Job Sheet"
+    },
+    "publish": "never"
+  }
+}

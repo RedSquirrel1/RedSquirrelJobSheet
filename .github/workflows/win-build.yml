@@ -1,0 +1,35 @@
+name: Build Windows EXE (Free)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build web
+        run: |
+          set GENERATE_SOURCEMAP=false
+          npm run build:web
+
+      - name: Package Windows installer
+        run: npx electron-builder -w
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RedSquirrelJobSheet-Windows
+          path: dist/**
